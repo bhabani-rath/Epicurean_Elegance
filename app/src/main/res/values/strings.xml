@@ -49,4 +49,11 @@
     <string name="food_name">Food Name</string>
     <string name="recent_buy">Recent Buy</string>
     <string name="buy_again">Buy Again</string>
+    <string name="address">Address</string>
+    <string name="myname">Bhabani Shankar Rath</string>
+    <string name="Address">House no: 006, Route No: 15H , c/o: Minaketan Rath , Bhabani Shankar Rath , Near Shanti Kalyan Mandap , Pallahat , Khordha , Pin: 752056</string>
+    <string name="my_mail">bhabanishankarr21+android-devlopement@gmail.com</string>
+    <string name="mynumber">+91 7735449565</string>
+    <string name="contact_no">Contact No:</string>
+    <string name="save_information">Save Information</string>
 </resources>
