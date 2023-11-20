@@ -12,4 +12,6 @@
     android:textSize="16sp"
     android:paddingStart="15dp"
     android:elevation="365dp"
-    tools:ignore="RtlSymmetry" />
+    tools:ignore="RtlSymmetry"
+    android:orientation="vertical"
+    android:background="@color/white"/>

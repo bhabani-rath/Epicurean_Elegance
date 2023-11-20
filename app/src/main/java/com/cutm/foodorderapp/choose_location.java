@@ -46,7 +46,6 @@ public class choose_location extends AppCompatActivity {
                 "Sambalpur", "Sonepur", "Sunabeda", "Talcher", "Titlagarh"
         };
 
-
         // Create a list of locations
         List<String> locations = new ArrayList<>();
         // Add more locations as needed

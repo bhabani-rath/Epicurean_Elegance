@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow"
-    tools:context=".splash_screen_app_logo">
+    tools:context=".splash_screen_app_logo"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView8"

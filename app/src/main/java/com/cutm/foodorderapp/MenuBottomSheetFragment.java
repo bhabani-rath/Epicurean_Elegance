@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuBottomSheetFragment extends BottomSheetDialogFragment {
-    private View view;
     RecyclerView recyclerView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
