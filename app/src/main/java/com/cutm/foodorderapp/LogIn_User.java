@@ -1,5 +1,7 @@
 package com.cutm.foodorderapp;
 
+// LogIn_User.java
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +20,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cutm.foodorderapp.Database.DatabaseHelper;
+
 public class LogIn_User extends AppCompatActivity {
+
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,10 @@ public class LogIn_User extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.status_bar_color));
         setContentView(R.layout.activity_log_in_user);
+
+        // Initialize DatabaseHelper
+        databaseHelper = new DatabaseHelper(this);
+
         TextView textView = findViewById(R.id.textView9);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,20 +46,31 @@ public class LogIn_User extends AppCompatActivity {
                 Toast.makeText(LogIn_User.this, "Register With Providing The Information", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Button button = findViewById(R.id.button4);
-        button.setOnClickListener(new View.OnClickListener() {
+        EditText emailEditText = findViewById(R.id.editTextTextEmailAddress);
+        EditText passwordEditText = findViewById(R.id.editTextTextPassword);
+        Button loginButton = findViewById(R.id.button4);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v1) {
                 if (validateForm()) {
-                    Intent intent = new Intent(LogIn_User.this, choose_location.class);
-                    startActivity(intent);
-                    Toast.makeText(LogIn_User.this, "Enter Your Location!!", Toast.LENGTH_SHORT).show();
+                    // Proceed with login logic
+                    String email = emailEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+
+                    // Check if the user exists in the database
+                    if (databaseHelper.checkUserCredentials(email, password)) {
+                        // User authenticated, proceed to the next screen or action
+                        Intent intent = new Intent(LogIn_User.this, choose_location.class);
+                        startActivity(intent);
+                        Toast.makeText(LogIn_User.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // User not found or invalid credentials
+                        Toast.makeText(LogIn_User.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
-
     // Add validateForm method here
     private boolean validateForm() {
         boolean valid = true;
