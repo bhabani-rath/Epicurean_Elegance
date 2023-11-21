@@ -18,7 +18,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cutm.foodorderapp.Database.DatabaseHelper;
+import com.cutm.foodorderapp.Database.User;
+
 public class Register_User extends AppCompatActivity {
+
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,10 @@ public class Register_User extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.status_bar_color));
         setContentView(R.layout.activity_register_user);
+
+        // Initialize DatabaseHelper
+        databaseHelper = new DatabaseHelper(this);
+
         TextView textView = findViewById(R.id.textView_log_redirect);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,12 +45,30 @@ public class Register_User extends AppCompatActivity {
                 Toast.makeText(Register_User.this, "LogIn With Your Credentials", Toast.LENGTH_SHORT).show();
             }
         });
+
         Button registerButton = findViewById(R.id.button4);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateForm()) {
                     // Proceed with registration logic
+                    String name = getNameFromEditText();
+                    String email = getEmailFromEditText();
+                    String password = getPasswordFromEditText();
+
+                    // Create a new user
+                    User newUser = new User(name, email, password);
+
+                    // Add the user to the database
+                    databaseHelper.addUser(newUser);
+
+                    // Start the LogIn_User activity
+                    Intent intent = new Intent(Register_User.this, LogIn_User.class);
+                    startActivity(intent);
+                    Toast.makeText(Register_User.this, "Registration successful! Log in with your credentials.", Toast.LENGTH_SHORT).show();
+
+                    // Finish the current activity
+                    finish();
                 }
             }
         });
@@ -81,6 +108,7 @@ public class Register_User extends AppCompatActivity {
 
         return valid;
     }
+
     //AlertDialog For Exit
     @Override
     public void onBackPressed() {
@@ -102,27 +130,41 @@ public class Register_User extends AppCompatActivity {
                         Toast.makeText(Register_User.this, "Thanks For Staying", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNeutralButton("Rate Us",new DialogInterface.OnClickListener(){
+                .setNeutralButton("Rate Us", new DialogInterface.OnClickListener() {
                     @SuppressLint("QueryPermissionsNeeded")
                     @Override
-                    public void onClick(DialogInterface dialog, int which){
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Intent.ACTION_SENDTO);
-                        intent.setData( Uri.parse("mailto:bhabanishankarr21@gmail.com"));
-                        // Create a URI with subject and body
+                        intent.setData(Uri.parse("mailto:bhabanishankarr21@gmail.com"));
                         Uri uri = Uri.parse("mailto:example@example.com" +
                                 "?subject=" + Uri.encode("Rating Of The App") +
                                 "&body=" + Uri.encode("Write About Our App"));
                         intent.setData(uri);
                         intent.setPackage("com.google.android.gm");
-                        if (intent.resolveActivity(getPackageManager())!=null){
+                        if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivity(intent);
                             Toast.makeText(Register_User.this, "Mail Us Your Rating To Us", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Toast.makeText(Register_User.this, "Gmail App Is Not Installed", Toast.LENGTH_SHORT).show();
                         }
                         startActivity(intent);
                     }
                 })
                 .show();
+    }
+
+    private String getNameFromEditText() {
+        EditText nameEditText = findViewById(R.id.edittext_register);
+        return nameEditText.getText().toString();
+    }
+
+    private String getEmailFromEditText() {
+        EditText emailEditText = findViewById(R.id.edittext_register1);
+        return emailEditText.getText().toString();
+    }
+
+    private String getPasswordFromEditText() {
+        EditText passwordEditText = findViewById(R.id.edittext_register2);
+        return passwordEditText.getText().toString();
     }
 }
